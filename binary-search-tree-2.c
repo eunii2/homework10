@@ -1,25 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct node {
+typedef struct node { // 노드 정의
 	int key;
-	struct node *left;
-	struct node *right;
+	struct node *left; // 왼쪽 노드 포인터
+	struct node *right; // 오른쪽 노드 포인터
 } Node;
 
 /* for stack */
-#define MAX_STACK_SIZE 20
-Node* stack[MAX_STACK_SIZE];
-int top = -1;
+#define MAX_STACK_SIZE 20 // 스택 최대 사이즈
+Node* stack[MAX_STACK_SIZE]; // 스택 정의
+int top = -1; // 스택 최상위 포인터
 
-Node* pop();
-void push(Node* aNode);
+Node* pop(); // 스택 pop 함수
+void push(Node* aNode); // 스택 push 함수
 
 /* for queue */
-#define MAX_QUEUE_SIZE 20
-Node* queue[MAX_QUEUE_SIZE];
-int front = -1;
-int rear = -1;
+#define MAX_QUEUE_SIZE 20 // 큐 최대 사이즈
+Node* queue[MAX_QUEUE_SIZE]; // 큐 정의
+int front = -1; // 큐 맨 앞
+int rear = -1; // 큐 맨 뒤
 
 
 
@@ -41,7 +41,9 @@ void enQueue(Node* aNode);
 void printStack();
 
 int main()
-{
+{	
+	printf("[----- [Choi Gaeun] [2022078054] -----]");
+
 	char command;
 	int key;
 	Node* head = NULL;
@@ -103,7 +105,9 @@ int main()
 	return 1;
 }
 
-int initializeBST(Node** h) {
+int initializeBST(Node** h) { // 이진탐색트리 초기화 함수
+	// 만약 트리가 비어있지 않다면, 모든 노드를 제거
+	// 헤드 노드를 생성하고, 초기값을 설정
 
 	/* if the tree is not empty, then remove all allocated nodes from the tree*/
 	if(*h != NULL)
@@ -123,8 +127,9 @@ int initializeBST(Node** h) {
 }
 
 
-
+// 재귀를 사용한 중위 순회 함수
 void recursiveInorder(Node* ptr)
+// ptr가 NULL이 아닐 때까지 왼쪽 서브트리를 탐색한 후, 현재 노들르 출력하고, 오른쪽 서브트리를 탐색
 {
 	if(ptr) {
 		recursiveInorder(ptr->left);
@@ -136,7 +141,9 @@ void recursiveInorder(Node* ptr)
 /**
  * textbook: p 224
  */
+// 반목문을 사용한 중위 순회 함수
 void iterativeInorder(Node* node)
+// 스택을 이용하여 왼쪽 서브트리를 모두 탐색한 후, 현재 노드를 출력하고, 오른쪽 서브트리를 탐색
 {
 	for(;;)
 	{
@@ -154,7 +161,9 @@ void iterativeInorder(Node* node)
 /**
  * textbook: p 225
  */
+// 레벨 순서 순회 함수
 void levelOrder(Node* ptr)
+// 큐를 이용하여 노드를 순서대로 탐색하고, 자식 논들르 큐에 추가
 {
 	// int front = rear = -1;
 
@@ -180,8 +189,11 @@ void levelOrder(Node* ptr)
 
 }
 
-
+// 노드 삽입 함수
 int insert(Node* head, int key)
+// 새로운 노들르 생성, 키 값을 설정
+// 헤드의 왼쪽이 NULL이 아니면, 헤드의 왼쪽에 새 노드를 연결
+// 그렇지 않으면, 적절한 위치를 찾아 새 노드를 삽입
 {
 	Node* newNode = (Node*)malloc(sizeof(Node));
 	newNode->key = key;
@@ -224,8 +236,10 @@ int insert(Node* head, int key)
 	return 1;
 }
 
-
+// 노드 삭제 함수
 int deleteNode(Node* head, int key)
+//삭제하려는 노드를 찾고, 해당 노드의 자식 노드의 수에 따라 적절하게 삭제.
+
 {
 	if (head == NULL) {
 		printf("\n Nothing to delete!!\n");
@@ -350,6 +364,8 @@ int deleteNode(Node* head, int key)
 
 
 void freeNode(Node* ptr)
+// BST의 노드를 재귀적으로 해제하는 함수
+// 왼쪽과 오른쪽 하위 트리를 순회하면서 모든 노드를 해제
 {
 	if(ptr) {
 		freeNode(ptr->left);
@@ -359,6 +375,8 @@ void freeNode(Node* ptr)
 }
 
 int freeBST(Node* head)
+// BST를 해제하는 함수
+// 모든 노드를 해제한 후에 헤드 노드를 해제
 {
 
 	if(head->left == head)
@@ -377,18 +395,22 @@ int freeBST(Node* head)
 
 
 Node* pop()
+// 스택에서 노드를 팝하는 함수
+// 스택이 비어있지 않은 경우에만 노드를 반환
 {
 	if (top < 0) return NULL;
 	return stack[top--];
 }
 
 void push(Node* aNode)
+// 스택에 노드를 푸시하는 함수
 {
 	stack[++top] = aNode;
 }
 
 
 void printStack()
+// 스택의 내용을 출력하는 함수
 {
 	int i = 0;
 	printf("--- stack ---\n");
@@ -400,6 +422,8 @@ void printStack()
 
 
 Node* deQueue()
+// 큐에서 노드를 데큐하는 함수
+// 큐가 비어있지 않은 경우에만 노들르 반환
 {
 	if (front == rear) {
 		// printf("\n....Now Queue is empty!!\n" );
@@ -413,6 +437,8 @@ Node* deQueue()
 
 
 void enQueue(Node* aNode)
+// 큐에 노드를 인큐하는 함수
+// 큐가 꽉 차지 않은 경우에만 노드를 인큐
 {
 	rear = (rear + 1) % MAX_QUEUE_SIZE;
 	if (front == rear) {
